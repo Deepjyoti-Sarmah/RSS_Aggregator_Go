@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"log"
+	"net/http"
 	"os"
-  "log"
 
-  "github.com/joho/godotenv"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-  fmt.Println("RSS Aggrigator in Golang")
+  // fmt.Println("RSS Aggrigator in Golang")
   
   godotenv.Load(".env")
 
@@ -18,5 +20,29 @@ func main() {
     log.Fatal("PORT is not found in the environment")
   }
 
-  fmt.Println("PORT", portString)
+  router := chi.NewRouter()
+
+  router.Use(cors.Handler(cors.Options{
+    AllowedOrigins: []string{"https://*", "http://*"},
+    AllowedMethods: []string{"GET", "POST", "DELETE", "OPTIONS"},
+    AllowedHeaders: []string{"*"},
+    ExposedHeaders: []string{"Link"},
+    AllowCredentials: false,
+    MaxAge: 300,
+  }))
+
+  srv := &http.Server{
+    Handler: router,
+    Addr: ":"+portString,
+  }
+
+  log.Printf("Server starting on port %v", portString)
+
+  err := srv.ListenAndServe()
+  if err != nil {
+    log.Fatal(err)
+  }
+
+
+  // fmt.Println("PORT", portString)
 }
