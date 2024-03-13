@@ -73,5 +73,4 @@ func main() {
 
 	log.Fatal(srv.ListenAndServe())
 
-	// fmt.Println("PORT", portString)
 }
