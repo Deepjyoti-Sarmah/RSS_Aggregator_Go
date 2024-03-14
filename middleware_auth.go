@@ -1,18 +1,18 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 
 	"github.com/Deepjyoti-Sarmah/RSS_Aggregator/internal/auth"
 	"github.com/Deepjyoti-Sarmah/RSS_Aggregator/internal/database"
 )
 
-type authedHandler func(http.ResponseWriter, *http.Request, database.User) 
+type authedHandler func(http.ResponseWriter, *http.Request, database.User)
 
 func (apiCfg *apiConfig) middlewareAuth(handler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		apiKey, err := auth.GetAPIKey(r.Header);
+		apiKey, err := auth.GetAPIKey(r.Header)
 		if err != nil {
 			responseWithError(w, 403, fmt.Sprintf("Auth error: %v", err))
 			return

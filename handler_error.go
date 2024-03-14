@@ -2,6 +2,6 @@ package main
 
 import "net/http"
 
-func handlerError(w http.ResponseWriter, r *http.Request)  {
+func handlerError(w http.ResponseWriter, r *http.Request) {
 	responseWithError(w, 400, "Something went wrong")
 }

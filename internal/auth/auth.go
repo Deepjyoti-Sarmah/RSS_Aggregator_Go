@@ -11,8 +11,8 @@ import (
 //eg :=
 //Authorization : Apikey {insert apikey here}
 
-func GetAPIKey(headers http.Header) (string, error)  {
-	val := headers.Get("Authorization")	
+func GetAPIKey(headers http.Header) (string, error) {
+	val := headers.Get("Authorization")
 	if val == "" {
 		return "", errors.New("no authentication info found")
 	}
@@ -25,6 +25,6 @@ func GetAPIKey(headers http.Header) (string, error)  {
 	if vals[0] != "ApiKey" {
 		return "", errors.New("malformed first part of auth header")
 	}
-	 
+
 	return vals[1], nil
 }
