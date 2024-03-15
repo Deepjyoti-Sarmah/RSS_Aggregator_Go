@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,7 +20,11 @@ type apiConfig struct {
 }
 
 func main() {
-	// fmt.Println("RSS Aggrigator in Golang")
+	feed, err := urlToFeed("http://wagslane.dev/index.xml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(feed)
 
 	godotenv.Load(".env")
 
