@@ -15,11 +15,11 @@ func startScapping(
 	db *database.Queries,
 	concurrency int,
 	timeBetweenRequest time.Duration,
-)  {
+) {
 	log.Printf("Scaping on %v goroutines every %s duration", concurrency, timeBetweenRequest)
 	ticker := time.NewTicker(timeBetweenRequest)
-	for ; ; <- ticker.C {
-		feeds,err := db.GetNextFeedsToFetch(
+	for ; ; <-ticker.C {
+		feeds, err := db.GetNextFeedsToFetch(
 			context.Background(),
 			int32(concurrency),
 		)
@@ -66,16 +66,16 @@ func scrapeFeed(db *database.Queries, wg *sync.WaitGroup, feed database.Feed) {
 			continue
 		}
 
-		_,err = db.CreatePost(context.Background(), 
+		_, err = db.CreatePost(context.Background(),
 			database.CreatePostParams{
-				ID: uuid.New(),
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
-				Title: item.Title,
+				ID:          uuid.New(),
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+				Title:       item.Title,
 				Description: description,
 				PublishedAt: pubAt,
-				Url: item.Link,
-				FeedID: feed.ID,
+				Url:         item.Link,
+				FeedID:      feed.ID,
 			})
 		if err != nil {
 			log.Println("failed to create post", err)

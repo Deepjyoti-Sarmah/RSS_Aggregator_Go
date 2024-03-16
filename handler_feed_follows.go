@@ -39,7 +39,7 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
 	responseWithJSON(w, 201, databaseFeedFollowToFeedFollow(feed_follow))
 }
 
-func (apiCfg *apiConfig) handlerGetFeedFollows (w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *apiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Request, user database.User) {
 	feed_follow, err := apiCfg.DB.GetFeedFollow(r.Context(), user.ID)
 	if err != nil {
 		responseWithError(w, 400, fmt.Sprintf("Couldn't get feed follows: %v", err))
@@ -49,7 +49,7 @@ func (apiCfg *apiConfig) handlerGetFeedFollows (w http.ResponseWriter, r *http.R
 	responseWithJSON(w, 201, databaseFeedFollowsToFeedFollows(feed_follow))
 }
 
-func (apiCfg *apiConfig) handlerDeleteFeedFollow (w http.ResponseWriter, r *http.Request, user database.User) {
+func (apiCfg *apiConfig) handlerDeleteFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {
 	feedFollowIDstr := chi.URLParam(r, "feedFollowID")
 	feedFollowID, err := uuid.Parse(feedFollowIDstr)
 	if err != nil {
@@ -58,7 +58,7 @@ func (apiCfg *apiConfig) handlerDeleteFeedFollow (w http.ResponseWriter, r *http
 	}
 
 	err = apiCfg.DB.DeleteFeedFollow(r.Context(), database.DeleteFeedFollowParams{
-		ID: feedFollowID,
+		ID:     feedFollowID,
 		UserID: user.ID,
 	})
 	if err != nil {
