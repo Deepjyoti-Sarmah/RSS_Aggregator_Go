@@ -40,13 +40,14 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
 }
 
 func (apiCfg *apiConfig) handlerGetFeedFollows(w http.ResponseWriter, r *http.Request, user database.User) {
-	feed_follow, err := apiCfg.DB.GetFeedFollow(r.Context(), user.ID)
-	if err != nil {
-		responseWithError(w, 400, fmt.Sprintf("Couldn't get feed follows: %v", err))
-		return
-	}
+	feedFollows, err := apiCfg.DB.GetFeedFollow(r.Context(), user.ID)
+	fmt.Println("GET FEED FOLLOWS: ",feedFollows)
+		if err != nil {
+			responseWithError(w, http.StatusInternalServerError, "Couldn't create feed follow")
+			return
+		}
 
-	responseWithJSON(w, 201, databaseFeedFollowsToFeedFollows(feed_follow))
+	responseWithJSON(w, http.StatusOK, databaseFeedFollowsToFeedFollows(feedFollows))
 }
 
 func (apiCfg *apiConfig) handlerDeleteFeedFollow(w http.ResponseWriter, r *http.Request, user database.User) {

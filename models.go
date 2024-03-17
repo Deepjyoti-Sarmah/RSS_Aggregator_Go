@@ -72,11 +72,11 @@ func databaseFeedFollowToFeedFollow(dbFeedFollow database.FeedFollow) FeedFollow
 }
 
 func databaseFeedFollowsToFeedFollows(dbFeedFollow []database.FeedFollow) []FeedFollow {
-	feedFollows := []FeedFollow{}
-	for _, dbFeedFollow := range dbFeedFollow {
-		feedFollows = append(feedFollows, databaseFeedFollowToFeedFollow(dbFeedFollow))
+	result := make([]FeedFollow, len(dbFeedFollow))
+	for i, feedFollow := range dbFeedFollow {
+		result[i] = databaseFeedFollowToFeedFollow(feedFollow)
 	}
-	return feedFollows
+	return result
 }
 
 type Post struct {
